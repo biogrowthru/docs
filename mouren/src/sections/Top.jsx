@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { motion } from 'motion/react'
+import { useEffect, useRef, useState } from 'react'
+import { motion, AnimatePresence } from 'motion/react'
 import { Logo } from '../components/Logo.jsx'
 import { CountUp, Magnet } from '../components/motion.jsx'
 import { asset, Shield } from '../components/ui.jsx'
@@ -18,25 +18,77 @@ export function PromoBar({ promo }) {
   )
 }
 
-const LINKS = [['#formula', 'Формула'], ['#kurs', '12 недель'], ['#sostav', 'Состав'], ['#tarify', 'Цены'], ['#voprosy', 'Вопросы']]
+const LINKS = [['#formula', 'Формула'], ['#nauka', 'Наука и врачи'], ['#kurs', '12 недель'], ['#otzyvy', 'Отзывы'], ['#sostav', 'Состав'], ['#tarify', 'Цены и гарантия'], ['#voprosy', 'Вопросы']]
+const NAV = LINKS.filter(([h]) => ['#formula', '#kurs', '#sostav', '#tarify', '#voprosy'].includes(h))
+
+const go = (h) => {
+  const el = document.querySelector(h)
+  if (!el) return
+  if (window.__lenis) window.__lenis.scrollTo(el, { offset: -72 })
+  else el.scrollIntoView({ behavior: 'smooth' })
+}
 
 export function Header({ onOrder }) {
   const [solid, setSolid] = useState(false)
+  const [hidden, setHidden] = useState(false)
+  const [menu, setMenu] = useState(false)
+  const [top, setTop] = useState(64)
+  const bar = useRef(null)
+  // На телефоне шапка уезжает при прокрутке вниз и возвращается при прокрутке вверх — больше места под текст
   useEffect(() => {
-    const on = () => setSolid(window.scrollY > 30)
+    let last = window.scrollY
+    const on = () => {
+      const y = window.scrollY
+      setSolid(y > 30)
+      if (Math.abs(y - last) > 8) { setHidden(y > last && y > 640); last = y }
+    }
     on(); window.addEventListener('scroll', on, { passive: true })
     return () => window.removeEventListener('scroll', on)
   }, [])
+  useEffect(() => {
+    if (!menu) return
+    window.__lenis?.stop(); document.documentElement.style.overflow = 'hidden'
+    const esc = (e) => e.key === 'Escape' && setMenu(false)
+    window.addEventListener('keydown', esc)
+    return () => { window.__lenis?.start(); document.documentElement.style.overflow = ''; window.removeEventListener('keydown', esc) }
+  }, [menu])
+  const pick = (h) => (e) => { e.preventDefault(); setMenu(false); requestAnimationFrame(() => go(h)) }
   return (
-    <header className={`sticky top-0 z-40 transition-[background-color,box-shadow] duration-300 ${solid ? 'bg-blush/90 shadow-[0_10px_30px_-20px_rgba(71,29,31,.5)] backdrop-blur-xl' : 'bg-blush'}`}>
-      <div className="wrap flex h-16 items-center gap-4">
-        <a href="#top" aria-label="mouren — в начало" className="rounded-xl bg-wine px-3.5 py-2.5 text-blush"><Logo className="h-[15px] w-auto" /></a>
-        <nav aria-label="Разделы" className="ml-auto hidden items-center gap-1 lg:flex">
-          {LINKS.map(([h, t]) => <a key={h} href={h} className="rounded-full px-3.5 py-2 text-[15px] font-medium text-wine/75 transition-colors hover:bg-wine/5 hover:text-wine">{t}</a>)}
-        </nav>
-        <button type="button" onClick={onOrder} className="btn btn-wine ml-auto min-h-[44px] px-5 text-[15px] lg:ml-3">Начать курс</button>
-      </div>
-    </header>
+    <>
+      <header ref={bar} className={`sticky top-0 z-40 transition-[background-color,box-shadow,translate] duration-300 ease-[cubic-bezier(.23,1,.32,1)] ${hidden && !menu ? 'max-lg:-translate-y-full' : ''} ${solid ? 'bg-blush/90 shadow-[0_10px_30px_-20px_rgba(71,29,31,.5)] backdrop-blur-xl' : 'bg-blush'}`}>
+        <div className="wrap flex h-16 items-center gap-2 sm:gap-4">
+          <a href="#top" onClick={pick('#top')} aria-label="mouren — в начало" className="rounded-xl bg-wine px-3.5 py-2.5 text-blush"><Logo className="h-[15px] w-auto" /></a>
+          <nav aria-label="Разделы" className="ml-auto hidden items-center gap-1 lg:flex">
+            {NAV.map(([h, t]) => <a key={h} href={h} className="rounded-full px-3.5 py-2 text-[15px] font-medium text-wine/75 transition-colors hover:bg-wine/5 hover:text-wine">{t}</a>)}
+          </nav>
+          <button type="button" onClick={onOrder} className="btn btn-wine ml-auto min-h-[44px] px-5 text-[15px] lg:ml-3">Начать курс</button>
+          <button type="button" aria-label={menu ? 'Закрыть меню' : 'Открыть меню'} aria-expanded={menu} aria-controls="menu" onClick={() => { setTop(Math.max(0, bar.current?.getBoundingClientRect().bottom ?? 64)); setMenu(!menu) }}
+            className="relative grid size-11 shrink-0 place-items-center rounded-full border border-wine/20 text-wine cursor-pointer lg:hidden">
+            <span className={`absolute h-[2px] w-[18px] rounded bg-current transition-transform duration-300 ease-[cubic-bezier(.23,1,.32,1)] ${menu ? 'rotate-45' : '-translate-y-[4px]'}`} />
+            <span className={`absolute h-[2px] w-[18px] rounded bg-current transition-transform duration-300 ease-[cubic-bezier(.23,1,.32,1)] ${menu ? '-rotate-45' : 'translate-y-[4px]'}`} />
+          </button>
+        </div>
+      </header>
+      <AnimatePresence>
+        {menu && (
+          <motion.div id="menu" style={{ top }} className="fixed inset-x-0 bottom-0 z-[45] flex flex-col overflow-y-auto bg-blush px-5 pb-[max(20px,env(safe-area-inset-bottom))] pt-4 text-wine lg:hidden"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.15 } }} transition={{ duration: 0.2 }}>
+            <nav aria-label="Меню" className="flex flex-col">
+              {LINKS.map(([h, t], k) => (
+                <motion.a key={h} href={h} onClick={pick(h)} className="flex items-center justify-between border-b border-wine/12 py-4 text-[26px] font-semibold leading-tight"
+                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 * k, duration: 0.35, ease: [0.23, 1, 0.32, 1] }}>
+                  {t}<span aria-hidden="true" className="text-[20px] text-wine/40">→</span>
+                </motion.a>
+              ))}
+            </nav>
+            <div className="mt-auto flex flex-col gap-3 pt-8">
+              <button type="button" onClick={() => { setMenu(false); onOrder() }} className="btn btn-wine w-full">Попробовать — {rub(perDay(CONFIG.plans.find((x) => x.id === 'course')))} в&nbsp;день</button>
+              <p className="text-center text-[13px] text-wine/65">Гарантия результата · доставка 0 ₽ · отмена в одно касание</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
 
@@ -64,7 +116,7 @@ export function Hero({ onOrder, angle }) {
             {title}
           </motion.h1>
           <motion.a href="#otzyvy" className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[14.5px] text-wine" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
-            <span className="tracking-[2px]">★★★★★</span><b className="font-semibold">4,9 · 2 104 оценки</b><span className="text-wine/60">· 24 врача разобрали состав</span>
+            <span className="tracking-[2px]">★★★★★</span><b className="font-semibold">4,9 · 2 104 оценки</b><span className="hidden text-wine/60 sm:inline">· 24 врача разобрали состав</span>
           </motion.a>
           <motion.p className="lead max-w-[32em] text-wine/80" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.9, ease: [0.23, 1, 0.32, 1] }}>
             Коллаген 2,5&nbsp;г&nbsp;+ 30 веществ вместо 22 добавок на полке. Через 12 недель — энергия до вечера, спокойный живот, плотнее кожа и меньше волос на расчёске. Или вернём деньги.

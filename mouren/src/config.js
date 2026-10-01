@@ -7,6 +7,7 @@ export const CONFIG = {
   plans: [
     {
       id: 'course',
+      short: 'Курс 12 недель',
       title: 'Курс «Снова собой» · 12 недель',
       badge: 'Рекомендуем · полный цикл',
       price: 18000,
@@ -19,6 +20,7 @@ export const CONFIG = {
     },
     {
       id: 'month',
+      short: 'Подписка 30 дней',
       title: 'Подписка 30 дней',
       badge: '',
       price: 6675,
@@ -31,6 +33,7 @@ export const CONFIG = {
     },
     {
       id: 'once',
+      short: 'Разовая покупка',
       title: 'Разовая покупка',
       badge: '',
       price: 9000,

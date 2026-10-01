@@ -179,7 +179,7 @@ export function Faq() {
 export function FinalCta({ onOrder }) {
   const c = plan('course')
   return (
-    <section className="bg-wine py-20 text-white md:py-28" aria-labelledby="final-title">
+    <section id="final" className="bg-wine py-20 text-white md:py-28" aria-labelledby="final-title">
       <div className="wrap text-center">
         <Fade><h2 id="final-title" className="mx-auto max-w-[14em] text-[clamp(34px,5vw,64px)] font-bold leading-[1.04] text-blush">Через 12 недель вы снова узнаете себя в&nbsp;зеркале</h2></Fade>
         <Fade><p className="lead mx-auto mt-5 max-w-[34em] text-white/75">Один стик утром. 20 секунд. {rub(perDay(c))} в день. А если не почувствуете разницу — вернём деньги.</p></Fade>
@@ -192,15 +192,15 @@ export function FinalCta({ onOrder }) {
   )
 }
 
-export function Footer() {
+export function Footer({ base = '' }) {
   const L = CONFIG.legal, C = CONFIG.contacts
   return (
-    <footer className="bg-wine-deep pb-28 pt-16 text-white/60 md:pb-16">
+    <footer id="podval" className="bg-wine-deep pb-28 pt-16 text-white/60 md:pb-16">
       <div className="wrap flex flex-col gap-8">
         <div className="flex flex-col justify-between gap-6 md:flex-row">
           <div className="max-w-[24em]"><Logo className="h-6 w-auto text-blush" /><p className="mt-4 text-[14px] leading-relaxed">Your daily ultimate essentials + collagen. 31 активное вещество, 30 стиков по 15 г.</p></div>
           <nav aria-label="Разделы сайта" className="flex flex-wrap gap-x-6 gap-y-2 text-[14.5px]">
-            {[['#sostav', 'Состав'], ['#kurs', 'Курс 12 недель'], ['#tarify', 'Цены и гарантия'], ['#voprosy', 'Вопросы']].map(([h, t]) => <a key={h} href={h} className="hover:text-blush">{t}</a>)}
+            {[['#sostav', 'Состав'], ['#kurs', 'Курс 12 недель'], ['#tarify', 'Цены и гарантия'], ['#voprosy', 'Вопросы']].map(([h, t]) => <a key={h} href={base + h} className="hover:text-blush">{t}</a>)}
             {L.offerUrl && <a href={L.offerUrl} className="hover:text-blush">Публичная оферта</a>}
             {L.privacyUrl && <a href={L.privacyUrl} className="hover:text-blush">Политика конфиденциальности</a>}
           </nav>
@@ -224,11 +224,14 @@ export function Footer() {
 export function StickyBar({ planId, onOrder }) {
   const [show, setShow] = useState(false)
   useEffect(() => {
+    // Прячем панель там, где кнопка оформления и так на экране: тарифы, финальный экран, подвал
     const on = () => {
-      const t = document.getElementById('tarify')
-      const r = t ? t.getBoundingClientRect() : null
-      const inTarify = r ? r.top < window.innerHeight * 0.6 && r.bottom > window.innerHeight * 0.4 : false
-      setShow(window.scrollY > window.innerHeight * 0.8 && !inTarify)
+      const h = window.innerHeight
+      const over = ['tarify', 'final', 'podval'].some((id) => {
+        const r = document.getElementById(id)?.getBoundingClientRect()
+        return r && r.top < h * 0.75 && r.bottom > h * 0.25
+      })
+      setShow(window.scrollY > h * 0.8 && !over)
     }
     on(); window.addEventListener('scroll', on, { passive: true }); window.addEventListener('resize', on)
     return () => { window.removeEventListener('scroll', on); window.removeEventListener('resize', on) }
@@ -239,7 +242,7 @@ export function StickyBar({ planId, onOrder }) {
       {show && (
         <motion.div className="fixed inset-x-0 bottom-0 z-40 p-3 pb-[max(12px,env(safe-area-inset-bottom))]" initial={{ y: 120 }} animate={{ y: 0 }} exit={{ y: 120 }} transition={{ type: 'spring', stiffness: 400, damping: 36 }}>
           <div className="mx-auto flex max-w-[620px] items-center justify-between gap-3 rounded-full bg-wine py-2 pl-6 pr-2 text-white shadow-[0_20px_50px_-15px_rgba(71,29,31,.7)]">
-            <p className="min-w-0 leading-tight"><b className="tnum block text-[16px]">{rub(perDay(p))} в день</b><span className="block truncate text-[12.5px] text-white/65">{p.title.replace(/\s·.*/, '')} · гарантия {p.guaranteeDays} дней</span></p>
+            <p className="min-w-0 leading-tight"><b className="tnum block text-[16px]">{rub(perDay(p))} в день</b><span className="block truncate text-[12.5px] text-white/65">{p.short} · гарантия</span></p>
             <button type="button" onClick={onOrder} className="btn btn-blush min-h-[48px] shrink-0 px-6 text-[15.5px]">Оформить</button>
           </div>
         </motion.div>

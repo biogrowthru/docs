@@ -43,7 +43,7 @@ function Gallery() {
   const [i, setI] = useState(0)
   return (
     <div className="md:sticky md:top-24">
-      <div className="relative aspect-[1/0.86] overflow-hidden rounded-[24px] md:aspect-square md:rounded-[28px]">
+      <div className="relative -mx-5 aspect-[1/0.9] overflow-hidden md:mx-0 md:aspect-square md:rounded-[28px]">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div key={SLIDES[i].id} className={`absolute inset-0 flex ${SLIDES[i].bg}`} role="img" aria-label={SLIDES[i].alt}
             initial={{ opacity: 0, scale: 1.02 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }}
@@ -68,7 +68,7 @@ function Gallery() {
 }
 
 /* ---------- Блок покупки ---------- */
-function BuyBox({ planId, setPlanId, onBuy }) {
+function BuyBox({ planId, setPlanId, onBuy, ctaRef }) {
   const p = plan(planId)
   const isSub = planId !== 'once'
   const lastSub = useRef(planId === 'once' ? 'course' : planId)
@@ -81,10 +81,13 @@ function BuyBox({ planId, setPlanId, onBuy }) {
       <div>
         <p className="label text-wine/70">Разработано учёными НИЦ «Сколково»</p>
         <h1 className="mt-2 text-[clamp(27px,3.6vw,44px)] font-bold leading-[1.05]">mouren Daily Ultimate Essentials + Collagen</h1>
-        <a href="#otzyvy" className="mt-2 inline-flex items-center gap-2 text-[14px] text-black/60 hover:text-wine"><span className="tracking-[2px] text-wine">★★★★★</span>Отзывы и мнения врачей</a>
-        <p className="mt-3 text-[15px] leading-relaxed text-black/70 md:text-[16px]">Все витамины на день — в одном утреннем стике. 31 актив в рабочих дозах вместо 22 добавок: коллаген 2,5 г, 13 витаминов в активных формах, 6 минералов, пре-, про- и постбиотики, инозитол и теанин.</p>
-        <div className="mt-4 flex flex-wrap gap-2 text-[13px] font-medium text-wine">
-          {['30 стиков по 15 г', 'Клубника–малина', 'Без сахара', 'Без кофеина'].map((c) => <span key={c} className="rounded-full bg-blush-soft px-3 py-1.5">{c}</span>)}
+        <div className="mt-2.5 flex items-center justify-between gap-3">
+          <a href="#otzyvy" className="inline-flex items-center gap-2 text-[14px] text-black/60 hover:text-wine"><span className="tracking-[2px] text-wine">★★★★★</span><b className="font-semibold text-ink">4,9</b><span className="underline decoration-black/20 underline-offset-4">2 104 оценки</span></a>
+          <p className="tnum shrink-0 text-[15px] text-black/60 md:hidden">от <b className="text-[18px] text-wine">{rub(perDay(plan('course')))}</b>/день</p>
+        </div>
+        <p className="mt-3 text-[15px] leading-relaxed text-black/70 md:text-[16px]">Все витамины на день — в одном утреннем стике. 31 актив в рабочих дозах вместо 22 добавок<span className="hidden md:inline">: коллаген 2,5 г, 13 витаминов в активных формах, 6 минералов, пре-, про- и постбиотики, инозитол и теанин</span>.</p>
+        <div className="no-scrollbar -mx-5 mt-4 flex gap-2 overflow-x-auto px-5 text-[13px] font-medium text-wine md:mx-0 md:flex-wrap md:px-0">
+          {['30 стиков по 15 г', 'Клубника–малина', 'Без сахара', 'Без кофеина'].map((c) => <span key={c} className="shrink-0 rounded-full bg-blush-soft px-3 py-1.5">{c}</span>)}
         </div>
       </div>
 
@@ -140,7 +143,7 @@ function BuyBox({ planId, setPlanId, onBuy }) {
         <p className="mt-1.5 text-[13.5px] text-black/55">{p.billing}</p>
       </div>
 
-      <button type="button" onClick={onBuy} className="btn btn-wine w-full text-[18px]">{isSub ? 'Оформить подписку' : 'Купить'} — {rub(p.price)}</button>
+      <button ref={ctaRef} type="button" onClick={onBuy} className="btn btn-wine w-full text-[18px]">{isSub ? 'Оформить подписку' : 'Купить'} — {rub(p.price)}</button>
 
       <ul className="grid grid-cols-3 gap-2 text-center text-[12.5px] leading-tight text-black/65">
         <li className="flex flex-col items-center gap-1.5 rounded-[16px] bg-blush-soft p-3"><Shield className="size-5 text-wine" />Гарантия результата · {p.guaranteeDays} дней</li>
@@ -212,11 +215,19 @@ export default function ProductApp() {
   const [open, setOpen] = useState(false)
   const buy = useCallback(() => setOpen(true), [])
   const close = useCallback(() => setOpen(false), [])
+  // Нижняя панель видна, пока главной кнопки нет на экране, и прячется в подвале
+  const ctaRef = useRef(null)
   const [bar, setBar] = useState(false)
   useEffect(() => {
-    const on = () => setBar(window.scrollY > 900)
-    on(); window.addEventListener('scroll', on, { passive: true })
-    return () => window.removeEventListener('scroll', on)
+    const on = () => {
+      const h = window.innerHeight
+      const c = ctaRef.current?.getBoundingClientRect()
+      const f = document.getElementById('podval')?.getBoundingClientRect()
+      const ctaOnScreen = c && c.top < h - 90 && c.bottom > 70
+      setBar(!ctaOnScreen && !(f && f.top < h * 0.8))
+    }
+    on(); window.addEventListener('scroll', on, { passive: true }); window.addEventListener('resize', on)
+    return () => { window.removeEventListener('scroll', on); window.removeEventListener('resize', on) }
   }, [])
   const p = plan(planId)
   const home = './' + location.search.replace(/([?&])plan=[^&]*&?/, '$1').replace(/[?&]$/, '')
@@ -234,12 +245,12 @@ export default function ProductApp() {
         </div>
       </header>
       <main>
-        <section className="bg-white pb-12 pt-4 md:pb-24 md:pt-10">
+        <section className="bg-white pb-12 pt-0 md:pb-24 md:pt-10">
           <div className="wrap">
-            <nav aria-label="Навигация" className="mb-3 text-[13px] text-black/50 md:mb-5"><a href={home} className="hover:text-wine">Главная</a> / <span className="text-black/75">mouren Daily Ultimate Essentials</span></nav>
-            <div className="grid gap-8 md:grid-cols-2 md:gap-12 lg:grid-cols-[1.1fr_1fr]">
+            <nav aria-label="Навигация" className="mb-5 hidden text-[13px] text-black/50 md:block"><a href={home} className="hover:text-wine">Главная</a> / <span className="text-black/75">mouren Daily Ultimate Essentials</span></nav>
+            <div className="grid gap-6 md:grid-cols-2 md:gap-12 lg:grid-cols-[1.1fr_1fr]">
               <Gallery />
-              <BuyBox planId={planId} setPlanId={setPlanId} onBuy={buy} />
+              <BuyBox planId={planId} setPlanId={setPlanId} onBuy={buy} ctaRef={ctaRef} />
             </div>
           </div>
         </section>
@@ -248,12 +259,12 @@ export default function ProductApp() {
         <Reviews />
         <Faq />
       </main>
-      <Footer />
+      <Footer base={home} />
       <AnimatePresence>
         {bar && (
           <motion.div className="fixed inset-x-0 bottom-0 z-40 border-t border-wine/10 bg-white/95 p-3 pb-[max(12px,env(safe-area-inset-bottom))] backdrop-blur-xl" initial={{ y: 100 }} animate={{ y: 0 }} exit={{ y: 100 }} transition={{ type: 'spring', stiffness: 400, damping: 36 }}>
             <div className="wrap flex items-center justify-between gap-3">
-              <p className="min-w-0 leading-tight"><b className="tnum block text-[16px]">{rub(p.price)}</b><span className="block truncate text-[12.5px] text-black/55">{rub(perDay(p))} в день · гарантия {p.guaranteeDays} дней</span></p>
+              <p className="min-w-0 leading-tight"><b className="tnum block text-[16px]">{rub(p.price)}</b><span className="block truncate text-[12.5px] text-black/55">{rub(perDay(p))} в день</span></p>
               <button type="button" onClick={buy} className="btn btn-wine min-h-[50px] shrink-0 px-6 text-[16px]">{planId === 'once' ? 'Купить' : 'Оформить подписку'}</button>
             </div>
           </motion.div>

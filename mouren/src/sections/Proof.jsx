@@ -115,7 +115,8 @@ function norm(n) {
 }
 
 export function Label() {
-  const [open, setOpen] = useState({ 0: true, 1: true })
+  // На телефоне состав свёрнут: 31 позиция раскрытой — это пять экранов прокрутки
+  const [open, setOpen] = useState(() => (window.matchMedia('(min-width: 1024px)').matches ? { 0: true, 1: true } : {}))
   const all = COMPOSITION.every((_, k) => open[k])
   const toggleAll = () => setOpen(all ? {} : Object.fromEntries(COMPOSITION.map((_, k) => [k, true])))
   return (
