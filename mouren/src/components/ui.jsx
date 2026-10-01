@@ -3,7 +3,7 @@ export const asset = (p) => import.meta.env.BASE_URL + p
 
 export function Section({ id, tone = 'white', className = '', children, label }) {
   const tones = { white: 'bg-white text-ink', blush: 'bg-blush text-wine', wine: 'bg-wine text-white', soft: 'bg-blush-soft text-ink' }
-  return <section id={id} aria-label={label} className={`py-20 md:py-28 ${tones[tone]} ${className}`}>{children}</section>
+  return <section id={id} aria-label={label} className={`py-14 md:py-28 ${tones[tone]} ${className}`}>{children}</section>
 }
 
 export function Fade({ children, className = '', delay = 0, y = 24, as = 'div' }) {

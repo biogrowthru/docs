@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Fade, Arrow } from '../components/ui.jsx'
 import { CONFIG, rub, perDay } from '../config.js'
 
@@ -12,7 +13,7 @@ const PAINS = [
 
 export function Pains() {
   return (
-    <section id="znakomo" className="bg-white py-20 md:py-28" aria-labelledby="pains-title">
+    <section id="znakomo" className="bg-white py-14 md:py-28" aria-labelledby="pains-title">
       <div className="wrap">
         <Fade><h2 id="pains-title" className="h2 max-w-[14em] text-ink">Узнаёте себя хотя бы в&nbsp;двух?</h2></Fade>
         <Fade delay={0.05}><p className="lead mt-3 max-w-[34em] text-black/60">Листайте. Под каждой историей — что в стике отвечает именно за это и на какой неделе ждать изменений.</p></Fade>
@@ -62,6 +63,7 @@ const STACK = [
 export function Replace({ onOrder }) {
   const month = CONFIG.plans.find((p) => p.id === 'month')
   const save = CONFIG.stackPrice - month.price
+  const [all, setAll] = useState(false)
   return (
     <section id="formula" className="bg-wine py-20 text-white md:py-28" aria-labelledby="replace-title">
       <div className="wrap grid gap-10 lg:grid-cols-2 lg:gap-16">
@@ -86,13 +88,14 @@ export function Replace({ onOrder }) {
         </div>
         <Fade>
           <ul>
-            {STACK.map(([n, q, p]) => (
-              <li key={n} className="flex items-start justify-between gap-4 border-b border-white/12 py-4">
+            {STACK.map(([n, q, p], i) => (
+              <li key={n} className={`${i >= 4 && !all ? 'hidden md:flex' : 'flex'} items-start justify-between gap-4 border-b border-white/12 py-4`}>
                 <span><span className="block text-[16px] font-semibold">{n}</span><span className="text-[13px] text-white/55">{q}</span></span>
                 <span className="tnum shrink-0 text-[16px] font-semibold">{rub(p)}</span>
               </li>
             ))}
-            <li className="flex items-start justify-between gap-4 border-b border-white/12 py-4">
+            {!all && <li className="md:hidden"><button type="button" onClick={() => setAll(true)} className="w-full py-4 text-left text-[15px] font-semibold text-blush underline underline-offset-4">Показать все 22 добавки</button></li>}
+            <li className={`${all ? 'flex' : 'hidden md:flex'} items-start justify-between gap-4 border-b border-white/12 py-4`}>
               <span><span className="block text-[16px] font-semibold">C, E, β-каротин, цинк + медь, йод, селен, β-глюкан, OPC, имбирь</span><span className="text-[13px] text-white/55">ещё 9 уп.</span></span>
               <span className="shrink-0 text-[14px] text-white/60">не в сумме</span>
             </li>
@@ -118,12 +121,12 @@ const WHY = [
 
 export function Why() {
   return (
-    <section className="bg-white py-20 md:py-28" aria-labelledby="why-title">
+    <section className="bg-white py-14 md:py-28" aria-labelledby="why-title">
       <div className="wrap">
         <Fade><h2 id="why-title" className="h2 max-w-[16em]">Почему один стик работает лучше полки с&nbsp;добавками</h2></Fade>
-        <div className="mt-10 grid gap-3 md:grid-cols-2 md:gap-4">
+        <div className="mt-7 grid gap-2.5 md:mt-10 md:grid-cols-2 md:gap-4">
           {WHY.map(([t, d], i) => (
-            <Fade key={t} delay={i * 0.05} className="card flex flex-col gap-3 p-7">
+            <Fade key={t} delay={i * 0.05} className="card flex flex-col gap-2 p-5 md:gap-3 md:p-7">
               <span className="grid size-10 place-items-center rounded-full bg-wine text-[15px] font-bold text-blush">{i + 1}</span>
               <h3 className="text-[22px] font-semibold leading-tight">{t}</h3>
               <p className="text-[15.5px] leading-relaxed text-black/65">{d}</p>

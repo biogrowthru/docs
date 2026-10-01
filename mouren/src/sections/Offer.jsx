@@ -18,7 +18,7 @@ export function Plans({ planId, setPlanId, onOrder }) {
   const stack = stackFor(p)
   const totalValue = stack.reduce((s, x) => s + (x.value || 0), 0)
   return (
-    <section id="tarify" className="bg-white py-20 md:py-28" aria-labelledby="plans-title">
+    <section id="tarify" className="bg-white py-14 md:py-28" aria-labelledby="plans-title">
       <div className="wrap">
         <Fade><p className="label text-wine/70">Тариф и гарантия</p></Fade>
         <Fade><h2 id="plans-title" className="h2 mt-3 max-w-[16em]">12 недель, чтобы снова узнать себя в&nbsp;зеркале</h2></Fade>
@@ -106,7 +106,7 @@ export function FitCheck({ onOrder }) {
   const [checked, setChecked] = useState({})
   const any = Object.values(checked).some(Boolean)
   return (
-    <section className="bg-blush-soft py-20 md:py-28" aria-labelledby="fit-title">
+    <section className="bg-blush-soft py-14 md:py-28" aria-labelledby="fit-title">
       <div className="wrap grid gap-8 lg:grid-cols-2 lg:gap-16">
         <div>
           <Fade><h2 id="fit-title" className="h2">Подходит ли мне?</h2></Fade>
@@ -152,7 +152,7 @@ const FAQ = [
 export function Faq() {
   const [open, setOpen] = useState(0)
   return (
-    <section id="voprosy" className="bg-white py-20 md:py-28" aria-labelledby="faq-title">
+    <section id="voprosy" className="bg-white py-14 md:py-28" aria-labelledby="faq-title">
       <div className="wrap grid gap-8 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
         <Fade><h2 id="faq-title" className="h2">Перед тем как оформить</h2></Fade>
         <ul className="flex flex-col gap-2">

@@ -12,7 +12,7 @@ export function Science() {
   const [tag, setTag] = useState('Все')
   const docs = DOCTORS.filter((d) => tag === 'Все' || d.tag === tag).slice(0, tag === 'Все' ? 6 : 24)
   return (
-    <section id="nauka" className="bg-white py-20 md:py-28" aria-labelledby="sci-title">
+    <section id="nauka" className="bg-white py-14 md:py-28" aria-labelledby="sci-title">
       <div className="wrap">
         <Fade><p className="label text-wine/70">Наука и врачи</p></Fade>
         <Fade><h2 id="sci-title" className="h2 mt-3 max-w-[18em]">Разработано в «Сколково». Проверено на 240 женщинах. Разобрано 24 врачами.</h2></Fade>
@@ -46,15 +46,15 @@ export function Science() {
           </Fade>
         </div>
 
-        <Fade className="card mt-6 p-6 md:p-8">
+        <Fade className="card mt-6 overflow-hidden p-6 md:p-8">
           <h3 className="text-[clamp(22px,2.4vw,30px)] font-bold leading-tight">24 врача получили образцы и состав. Вот что они сказали</h3>
           <p className="mt-3 max-w-[48em] text-[15px] leading-relaxed text-black/60">Терапевты, гинекологи, гастроэнтерологи, дерматологи, эндокринологи, неврологи, кардиологи, нутрициологи, трихологи. Образцы — бесплатно, за текст не платим, формулировки не согласовываем.</p>
           <div className="no-scrollbar mt-5 flex gap-2 overflow-x-auto" role="tablist" aria-label="Специальность">
             {tags.map((t) => <button key={t} type="button" role="tab" aria-selected={t === tag} onClick={() => setTag(t)} className={`chip border ${t === tag ? 'border-wine bg-wine text-blush' : 'border-wine/15 text-wine hover:border-wine/40'}`}>{t}</button>)}
           </div>
-          <div className="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+          <div className="no-scrollbar -mx-6 mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-2 md:overflow-visible md:px-0 lg:grid-cols-3">
             {docs.map((d) => (
-              <article key={d.name} className="flex flex-col gap-2 rounded-[20px] border border-wine/10 p-5">
+              <article key={d.name} className="flex w-[78vw] max-w-[340px] shrink-0 snap-start flex-col gap-2 rounded-[20px] border border-wine/10 p-5 md:w-auto md:max-w-none">
                 <div className="flex items-start justify-between gap-2"><div><p className="text-[15.5px] font-semibold">{d.name}</p><p className="text-[12.5px] text-black/50">{d.role}</p></div>{d.example ? <Example /> : <span className="label text-wine">{d.tag}</span>}</div>
                 <p className="mt-1 text-[16px] font-semibold leading-snug">{d.title}</p>
                 <p className="text-[14px] leading-relaxed text-black/65">{d.quote}</p>
@@ -69,13 +69,13 @@ export function Science() {
 
 export function Reviews() {
   return (
-    <section id="otzyvy" className="bg-blush-soft py-20 md:py-28" aria-labelledby="rev-title">
+    <section id="otzyvy" className="bg-blush-soft py-14 md:py-28" aria-labelledby="rev-title">
       <div className="wrap">
         <Fade><h2 id="rev-title" className="h2">Что говорят те, кто пьёт больше месяца</h2></Fade>
-        <Fade><p className="lead mt-3 max-w-[36em] text-black/60">Отзывы только от оплаченных заказов, минусы тоже публикуем.</p></Fade>
-        <div className="mt-8 grid gap-3 md:grid-cols-2">
+        <Fade><p className="lead mt-3 max-w-[36em] text-black/60">Отзывы только от оплаченных заказов, минусы тоже публикуем. <span className="md:hidden">Листайте →</span></p></Fade>
+        <div className="no-scrollbar -mx-5 mt-8 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 md:mx-0 md:grid md:grid-cols-2 md:overflow-visible md:px-0">
           {REVIEWS.map((r) => (
-            <Fade key={r.name} className="card flex flex-col gap-2 p-6">
+            <Fade key={r.name} className="card flex w-[84vw] max-w-[380px] shrink-0 snap-start flex-col gap-2 p-6 md:w-auto md:max-w-none">
               <div className="flex items-start justify-between gap-3">
                 <div><p className="text-[15.5px] font-semibold">{r.name}</p><p className="text-[12.5px] text-black/50">{r.meta}</p></div>
                 <div className="flex items-center gap-2">{r.example && <Example />}<span className="text-[14px] tracking-[2px] text-wine" aria-label={`${r.stars} из 5`}>{'★'.repeat(r.stars)}{'☆'.repeat(5 - r.stars)}</span></div>

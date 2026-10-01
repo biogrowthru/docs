@@ -8,7 +8,7 @@ export function Directions() {
   const [i, setI] = useState(0)
   const d = DIRECTIONS[i]
   return (
-    <section className="bg-white py-20 md:py-28" aria-labelledby="dir-title">
+    <section className="bg-white py-14 md:py-28" aria-labelledby="dir-title">
       <div className="wrap">
         <Fade><h2 id="dir-title" className="h2">Десять направлений в&nbsp;одной дозе</h2></Fade>
         <Fade><p className="lead mt-3 text-black/60">Выберите, что важно вам, — покажем вещества и дозы.</p></Fade>
@@ -57,7 +57,7 @@ export function Timeline({ onOrder }) {
   const [s, setS] = useState(0)
   const w = WEEKS[s]
   return (
-    <section id="kurs" className="bg-blush-soft py-20 md:py-28" aria-labelledby="kurs-title">
+    <section id="kurs" className="bg-blush-soft py-14 md:py-28" aria-labelledby="kurs-title">
       <div className="wrap grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:gap-14">
         <div>
           <Fade><p className="label text-wine/70">12 недель · 6 этапов</p></Fade>
@@ -119,7 +119,7 @@ export function Label() {
   const all = COMPOSITION.every((_, k) => open[k])
   const toggleAll = () => setOpen(all ? {} : Object.fromEntries(COMPOSITION.map((_, k) => [k, true])))
   return (
-    <section id="sostav" className="bg-blush-soft py-20 md:py-28" aria-labelledby="label-title">
+    <section id="sostav" className="bg-blush-soft py-14 md:py-28" aria-labelledby="label-title">
       <div className="wrap">
         <Fade><h2 id="label-title" className="h2 max-w-[16em]">31 вещество: доза, форма и&nbsp;зачем</h2></Fade>
         <Fade><p className="lead mt-4 max-w-[40em] text-black/60">Открытая этикетка. Никаких «запатентованных комплексов», за которыми прячут 20&nbsp;мг. Каждая доза рабочая и ни одна не выше верхнего допустимого уровня. Мы платим за форму, а не за строку в составе: P5P вместо пиридоксина, бисглицинаты вместо оксидов.</p></Fade>
@@ -170,7 +170,7 @@ export function Compare() {
     ['В месяц', 'от 500 ₽, но без половины состава', `от ${CONFIG.stackPrice.toLocaleString('ru-RU')} ₽`, '6 675 ₽ · 222 ₽ в день'],
   ]
   return (
-    <section className="bg-white py-20 md:py-28" aria-labelledby="cmp-title">
+    <section className="bg-white py-14 md:py-28" aria-labelledby="cmp-title">
       <div className="wrap">
         <Fade><h2 id="cmp-title" className="h2 max-w-[16em]">mouren, аптечный мультивитамин или собрать самой?</h2></Fade>
         <Fade className="mt-8 overflow-x-auto rounded-[24px] border border-wine/10">

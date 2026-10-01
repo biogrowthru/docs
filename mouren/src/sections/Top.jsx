@@ -53,27 +53,27 @@ export function Hero({ onOrder, angle }) {
   const title = titles[angle] || 'Все витамины на день — в одном утреннем стике'
   return (
     <section id="top" className="relative overflow-hidden bg-blush text-wine">
-      <div className="wrap grid items-center gap-2 pb-14 pt-2 md:grid-cols-2 md:gap-10 md:pb-24 md:pt-10">
+      <div className="wrap grid items-center gap-1 pb-10 pt-0 md:grid-cols-2 md:gap-10 md:pb-24 md:pt-10">
         <motion.div className="relative order-1 md:order-2" initial={{ opacity: 0, scale: 0.96, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 1.1, ease: [0.23, 1, 0.32, 1] }}>
           <img src={asset('img/hero-pack-800.webp')} srcSet={`${asset('img/hero-pack-800.webp')} 800w, ${asset('img/hero-pack.webp')} 1254w`} sizes="(min-width: 768px) 50vw, 100vw"
-            width="1254" height="1254" fetchPriority="high" alt="mouren — 30 стиков по 15 г" className="mx-auto w-[min(100%,560px)] mix-blend-multiply" />
+            width="1254" height="1254" fetchPriority="high" alt="mouren — 30 стиков по 15 г" className="mx-auto h-[min(34vh,300px)] w-auto mix-blend-multiply md:h-auto md:w-[min(100%,560px)]" />
         </motion.div>
-        <div className="order-2 flex flex-col gap-5 md:order-1">
+        <div className="order-2 flex flex-col gap-4 md:order-1 md:gap-5">
           <motion.p className="label text-wine/70" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>Разработано учёными НИЦ «Сколково»</motion.p>
-          <motion.h1 className="text-[clamp(36px,5.4vw,68px)] font-bold leading-[1.02]" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.9, ease: [0.23, 1, 0.32, 1] }}>
+          <motion.h1 className="text-[clamp(32px,5.4vw,68px)] font-bold leading-[1.02]" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.9, ease: [0.23, 1, 0.32, 1] }}>
             {title}
           </motion.h1>
+          <motion.a href="#otzyvy" className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[14.5px] text-wine" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
+            <span className="tracking-[2px]">★★★★★</span><b className="font-semibold">4,9 · 2 104 оценки</b><span className="text-wine/60">· 24 врача разобрали состав</span>
+          </motion.a>
           <motion.p className="lead max-w-[32em] text-wine/80" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.9, ease: [0.23, 1, 0.32, 1] }}>
             Коллаген 2,5&nbsp;г&nbsp;+ 30 веществ вместо 22 добавок на полке. Через 12 недель — энергия до вечера, спокойный живот, плотнее кожа и меньше волос на расчёске. Или вернём деньги.
           </motion.p>
           <motion.div className="flex flex-col gap-3 sm:flex-row sm:items-center" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.9, ease: [0.23, 1, 0.32, 1] }}>
-            <Magnet strength={0.15} className="w-full sm:w-auto"><button type="button" onClick={onOrder} className="btn btn-wine w-full">Начать курс — {rub(perDay(course))} в&nbsp;день</button></Magnet>
-            <a href="#formula" className="btn btn-ghost">Что внутри</a>
+            <Magnet strength={0.15} className="w-full sm:w-auto"><button type="button" onClick={onOrder} className="btn btn-wine w-full">Попробовать — {rub(perDay(course))} в&nbsp;день</button></Magnet>
+            <a href="#formula" className="btn btn-ghost hidden sm:inline-flex">Что внутри</a>
           </motion.div>
-          <motion.a href="#otzyvy" className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[14.5px] text-wine" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
-            <span className="tracking-[2px]">★★★★★</span><b className="font-semibold">4,9 · 2 104 оценки</b><span className="text-wine/60">· 24 врача разобрали состав</span>
-          </motion.a>
-          <motion.ul className="flex flex-col gap-2 text-[14.5px] text-wine/80" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.75 }}>
+          <motion.ul className="flex flex-col gap-2 text-[13.5px] text-wine/80 md:text-[14.5px]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.75 }}>
             <li className="flex gap-2.5"><Shield className="size-5 shrink-0" /><span><b className="font-semibold text-wine">Гарантия результата:</b> не почувствуете разницу — вернём 100&nbsp;% денег, без возврата товара</span></li>
             <li className="flex gap-2.5"><svg viewBox="0 0 24 24" className="size-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" /><circle cx="7" cy="17.5" r="1.6" /><circle cx="17" cy="17.5" r="1.6" /></svg><span>Доставка по России бесплатно · пауза и отмена в одно касание</span></li>
           </motion.ul>

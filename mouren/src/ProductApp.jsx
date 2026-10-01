@@ -43,7 +43,7 @@ function Gallery() {
   const [i, setI] = useState(0)
   return (
     <div className="md:sticky md:top-24">
-      <div className="relative aspect-square overflow-hidden rounded-[28px]">
+      <div className="relative aspect-[1/0.86] overflow-hidden rounded-[24px] md:aspect-square md:rounded-[28px]">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div key={SLIDES[i].id} className={`absolute inset-0 flex ${SLIDES[i].bg}`} role="img" aria-label={SLIDES[i].alt}
             initial={{ opacity: 0, scale: 1.02 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }}
@@ -55,7 +55,7 @@ function Gallery() {
           {SLIDES.map((s, k) => <span key={s.id} className={`h-1.5 rounded-full transition-all ${k === i ? 'w-5 bg-wine' : 'w-1.5 bg-wine/30'}`} />)}
         </div>
       </div>
-      <div className="mt-3 grid grid-cols-4 gap-2">
+      <div className="mt-3 hidden grid-cols-4 gap-2 md:grid">
         {SLIDES.map((s, k) => (
           <button key={s.id} type="button" aria-label={s.alt} aria-pressed={k === i} onClick={() => setI(k)}
             className={`relative aspect-square overflow-hidden rounded-[16px] cursor-pointer ${s.bg} ${k === i ? 'ring-2 ring-wine ring-offset-2' : 'opacity-75 hover:opacity-100'}`}>
@@ -80,9 +80,9 @@ function BuyBox({ planId, setPlanId, onBuy }) {
     <div className="flex flex-col gap-5">
       <div>
         <p className="label text-wine/70">Разработано учёными НИЦ «Сколково»</p>
-        <h1 className="mt-2 text-[clamp(30px,3.6vw,44px)] font-bold leading-[1.05]">mouren Daily Ultimate Essentials + Collagen</h1>
+        <h1 className="mt-2 text-[clamp(27px,3.6vw,44px)] font-bold leading-[1.05]">mouren Daily Ultimate Essentials + Collagen</h1>
         <a href="#otzyvy" className="mt-2 inline-flex items-center gap-2 text-[14px] text-black/60 hover:text-wine"><span className="tracking-[2px] text-wine">★★★★★</span>Отзывы и мнения врачей</a>
-        <p className="mt-3 text-[16px] leading-relaxed text-black/70">Все витамины на день — в одном утреннем стике. 31 актив в рабочих дозах вместо 22 добавок: коллаген 2,5 г, 13 витаминов в активных формах, 6 минералов, пре-, про- и постбиотики, инозитол и теанин.</p>
+        <p className="mt-3 text-[15px] leading-relaxed text-black/70 md:text-[16px]">Все витамины на день — в одном утреннем стике. 31 актив в рабочих дозах вместо 22 добавок: коллаген 2,5 г, 13 витаминов в активных формах, 6 минералов, пре-, про- и постбиотики, инозитол и теанин.</p>
         <div className="mt-4 flex flex-wrap gap-2 text-[13px] font-medium text-wine">
           {['30 стиков по 15 г', 'Клубника–малина', 'Без сахара', 'Без кофеина'].map((c) => <span key={c} className="rounded-full bg-blush-soft px-3 py-1.5">{c}</span>)}
         </div>
@@ -129,16 +129,9 @@ function BuyBox({ planId, setPlanId, onBuy }) {
         )}
       </AnimatePresence>
 
-      {isSub && (
-        <div className="rounded-[20px] bg-blush p-5 text-wine">
-          <p className="flex items-center gap-2 text-[15px] font-bold"><svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M4 11h16v9H4zM3 7h18v4H3zM12 7v13M12 7c-1.5-3-5-3.5-5-1s3.5 1 5 1Zm0 0c1.5-3 5-3.5 5-1s-3.5 1-5 1Z" /></svg>В подарок к подписке</p>
-          <ul className="mt-3 flex flex-col gap-2 text-[14px]">
-            {gifts.map((g) => <li key={g.title} className="flex items-start justify-between gap-3"><span className="flex gap-2"><Check className="mt-0.5 size-4 shrink-0" />{g.title}</span><span className="tnum shrink-0 font-semibold">{g.value ? rub(g.value) : 'бесплатно'}</span></li>)}
-          </ul>
-        </div>
-      )}
 
       <div>
+        {isSub && <p className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-blush px-3 py-1 text-[13px] font-semibold text-wine">+ подарки на {rub(gifts.reduce((t, g) => t + (g.value || 0), 0))} к подписке</p>}
         <div className="flex items-baseline gap-3">
           <b className="tnum text-[38px] font-bold leading-none tracking-[-0.03em]">{rub(p.price)}</b>
           {save > 0 && <s className="tnum text-[18px] text-black/40">{rub(compare)}</s>}
@@ -154,6 +147,15 @@ function BuyBox({ planId, setPlanId, onBuy }) {
         <li className="flex flex-col items-center gap-1.5 rounded-[16px] bg-blush-soft p-3"><svg viewBox="0 0 24 24" className="size-5 text-wine" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" /><circle cx="7" cy="17.5" r="1.6" /><circle cx="17" cy="17.5" r="1.6" /></svg>Доставка по России 0 ₽</li>
         <li className="flex flex-col items-center gap-1.5 rounded-[16px] bg-blush-soft p-3"><svg viewBox="0 0 24 24" className="size-5 text-wine" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>Пауза и отмена в 1 касание</li>
       </ul>
+
+      {isSub && (
+        <div className="rounded-[20px] bg-blush p-5 text-wine">
+          <p className="flex items-center gap-2 text-[15px] font-bold"><svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M4 11h16v9H4zM3 7h18v4H3zM12 7v13M12 7c-1.5-3-5-3.5-5-1s3.5 1 5 1Zm0 0c1.5-3 5-3.5 5-1s-3.5 1-5 1Z" /></svg>В подарок к подписке</p>
+          <ul className="mt-3 flex flex-col gap-2 text-[14px]">
+            {gifts.map((g) => <li key={g.title} className="flex items-start justify-between gap-3"><span className="flex gap-2"><Check className="mt-0.5 size-4 shrink-0" />{g.title}</span><span className="tnum shrink-0 font-semibold">{g.value ? rub(g.value) : 'бесплатно'}</span></li>)}
+          </ul>
+        </div>
+      )}
 
       <Details />
     </div>
@@ -232,9 +234,9 @@ export default function ProductApp() {
         </div>
       </header>
       <main>
-        <section className="bg-white pb-16 pt-6 md:pb-24 md:pt-10">
+        <section className="bg-white pb-12 pt-4 md:pb-24 md:pt-10">
           <div className="wrap">
-            <nav aria-label="Навигация" className="mb-5 text-[13px] text-black/50"><a href={home} className="hover:text-wine">Главная</a> / <span className="text-black/75">mouren Daily Ultimate Essentials</span></nav>
+            <nav aria-label="Навигация" className="mb-3 text-[13px] text-black/50 md:mb-5"><a href={home} className="hover:text-wine">Главная</a> / <span className="text-black/75">mouren Daily Ultimate Essentials</span></nav>
             <div className="grid gap-8 md:grid-cols-2 md:gap-12 lg:grid-cols-[1.1fr_1fr]">
               <Gallery />
               <BuyBox planId={planId} setPlanId={setPlanId} onBuy={buy} />
