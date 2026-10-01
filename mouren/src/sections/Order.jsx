@@ -101,7 +101,7 @@ export function OrderSheet({ open, onClose, planId, setPlanId, promo }) {
                 </label>
                 {err.consent && <span className="-mt-2 text-[13px] text-red-700">{err.consent}</span>}
                 <button type="submit" disabled={sending} className="btn btn-wine w-full disabled:opacity-60">{sending ? 'Отправляем…' : `Оформить — ${rub(p.price)}`}</button>
-                <p className="flex items-center justify-center gap-2 text-center text-[13px] text-black/55"><Shield className="size-4" />Гарантия пустой тубы · {p.guaranteeDays} дней · доставка 0 ₽</p>
+                <p className="flex items-center justify-center gap-2 text-center text-[13px] text-black/55"><Shield className="size-4" />Гарантия результата · {p.guaranteeDays} дней · доставка 0 ₽</p>
               </form>
             )}
             {step === 'sent' && (

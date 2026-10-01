@@ -6,5 +6,9 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   base: './',
   plugins: [react(), tailwindcss()],
-  build: { assetsInlineLimit: 0, chunkSizeWarningLimit: 900 },
+  build: {
+    assetsInlineLimit: 0,
+    chunkSizeWarningLimit: 900,
+    rollupOptions: { input: { main: 'index.html', product: 'product.html' } },
+  },
 })

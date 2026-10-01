@@ -7,7 +7,7 @@ import { Logo } from '../components/Logo.jsx'
 const plan = (id) => CONFIG.plans.find((p) => p.id === id)
 
 function stackFor(p) {
-  const items = [{ title: `${p.tubes === 3 ? '3 тубы mouren, 90 стиков' : 'Туба mouren, 30 стиков'}`, note: `если собирать 22 добавки по отдельности`, value: CONFIG.stackPrice * p.tubes }]
+  const items = [{ title: `${p.tubes === 3 ? 'Курс mouren — 90 порций' : 'mouren — 30 порций'}`, note: `если собирать 22 добавки по отдельности`, value: CONFIG.stackPrice * p.tubes }]
   CONFIG.bonuses.filter((b) => b.plans.includes(p.id)).forEach((b) => items.push(b))
   return items
 }
@@ -57,7 +57,7 @@ export function Plans({ planId, setPlanId, onOrder }) {
               <motion.ul key={planId} className="mt-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
                 {stack.map((s) => (
                   <li key={s.title} className="flex items-start justify-between gap-4 border-t border-wine/8 py-3.5 first:border-t-0">
-                    <span><span className="block text-[15.5px] font-semibold">{s.title}{s.firstBatch && <span className="ml-2 rounded-full bg-blush px-2 py-0.5 align-middle text-[11px] font-semibold text-wine">первая партия</span>}</span>{s.note && <span className="text-[13px] text-black/50">{s.note}</span>}</span>
+                    <span><span className="block text-[15.5px] font-semibold">{s.title}</span>{s.note && <span className="text-[13px] text-black/50">{s.note}</span>}</span>
                     <span className="tnum shrink-0 text-[15px] font-semibold text-black/70">{s.value ? rub(s.value) : 'в подарок'}</span>
                   </li>
                 ))}
@@ -73,9 +73,9 @@ export function Plans({ planId, setPlanId, onOrder }) {
 
           <Fade className="flex flex-col gap-4">
             <div className="relative overflow-hidden rounded-[24px] bg-blush p-7 text-wine">
-              <div className="flex items-center gap-3"><Shield className="size-7" /><p className="label">Гарантия пустой тубы</p></div>
+              <div className="flex items-center gap-3"><Shield className="size-7" /><p className="label">Гарантия результата</p></div>
               <p className="mt-4 text-[clamp(22px,2.4vw,28px)] font-bold leading-tight">Допейте до последнего стика. Не почувствовали разницу — вернём 100&nbsp;%.</p>
-              <p className="mt-3 text-[15px] leading-relaxed text-wine/80">Тубу возвращать не нужно — даже пустую. Карта анализов и дневник остаются у вас. {p.guaranteeDays} дней на этом тарифе. Мы забираем весь риск себе — потому что уверены в составе.</p>
+              <p className="mt-3 text-[15px] leading-relaxed text-wine/80">Возвращать ничего не нужно — даже начатую упаковку. Карта анализов и дневник остаются у вас. {p.guaranteeDays} дней на этом тарифе. Мы забираем весь риск себе — потому что уверены в составе.</p>
             </div>
             <div className="rounded-[24px] bg-wine p-7 text-white">
               <p className="label text-blush/60">Подписка без ловушек</p>
@@ -135,18 +135,18 @@ export function FitCheck({ onOrder }) {
 }
 
 const FAQ = [
-  ['Когда я почувствую разницу?', 'Живот обычно отвечает первым — на 1–2 неделе. Энергия к вечеру — на 3–4, сон и цикл — на 5–6, ногти — на 7–8, кожа — на 9–10, волосы — к 12-й. Поэтому мы рекомендуем курс 12 недель, а не одну тубу.'],
+  ['Когда я почувствую разницу?', 'Живот обычно отвечает первым — на 1–2 неделе. Энергия к вечеру — на 3–4, сон и цикл — на 5–6, ногти — на 7–8, кожа — на 9–10, волосы — к 12-й. Поэтому мы рекомендуем курс 12 недель, а не один месяц.'],
   ['Почему порошок, а не капсулы?', '12,8 г активных веществ в день — это 25 капсул. В стик всё помещается за один раз, а пробиотики и клетчатка в порошке стабильнее.'],
   ['Какой вкус?', 'Клубника и малина, без сахара: стевия и эритрит. Цвет — от чёрной моркови и свёклы. Разводите в 200–250 мл холодной воды. Если сладко — в 300 мл.'],
   ['Можно пить постоянно?', 'Да, дозировки рассчитаны на ежедневный приём без перерывов. Раз в полгода имеет смысл сдавать ферритин, D и B12 — чтобы видеть эффект в цифрах.'],
   ['Совместим с другими добавками?', 'Если пьёте отдельно магний, железо или D3 — их можно убрать: они уже здесь. Омегу-3 оставьте, её в составе нет.'],
   ['А если у меня чувствительный живот?', 'Начните по протоколу мягкого старта: первые 5 дней — половина стика. Клетчатке нужно время подружиться с вами. Протокол приходит с заказом.'],
-  ['Как работает гарантия?', 'Не почувствовали разницу — напишите номер заказа, вернём 100 % туда, откуда вы платили. Тубу присылать не нужно. 30 дней на подписке и разовой покупке, 90 дней — на курсе 12 недель.'],
+  ['Как работает гарантия?', 'Не почувствовали разницу — напишите номер заказа, вернём 100 % туда, откуда вы платили. Товар присылать не нужно. 30 дней на подписке и разовой покупке, 90 дней — на курсе 12 недель.'],
   ['Как отменить подписку?', 'Одной кнопкой в личном кабинете. Без звонков и писем «а может, останетесь?». Напомним за 3 дня до каждого списания.'],
   ['Почему столько стоит?', `Те же вещества по отдельности — 22 добавки и от ${num(CONFIG.stackPrice)} ₽ в месяц. Здесь — 6 675 ₽, или 200 ₽ в день на курсе. Дешевле капучино.`],
   ['Чем лучше аптечных витаминов?', 'Формами и дозами. Бисглицинаты вместо оксидов, P5P, метилфолат, метил-B12, K2 MK-7 — плюс коллаген, пробиотики, инозитол и теанин, которых в аптечных мультивитаминах нет.'],
   ['Можно вместе с КОК?', 'Противопоказаний к совместному приёму в составе нет. КОК могут снижать уровень B6, B12, фолата и магния — все они здесь есть. Приём лучше обсудить с гинекологом.'],
-  ['Почему нет отзывов?', 'Потому что мы только запускаемся и не покупаем отзывы. Первые настоящие истории появятся после 30 дней у первых покупательниц — с плюсами и минусами.'],
+  ['Кто разработал формулу?', 'Учёные НИЦ «Сколково» вместе с R&D-партнёром: 31 вещество отобрано из 140 кандидатов по доказательной базе у женщин, форме с лучшим усвоением и рабочей дозе не выше ВДУ.'],
 ]
 
 export function Faq() {
@@ -182,10 +182,10 @@ export function FinalCta({ onOrder }) {
     <section className="bg-wine py-20 text-white md:py-28" aria-labelledby="final-title">
       <div className="wrap text-center">
         <Fade><h2 id="final-title" className="mx-auto max-w-[14em] text-[clamp(34px,5vw,64px)] font-bold leading-[1.04] text-blush">Через 12 недель вы снова узнаете себя в&nbsp;зеркале</h2></Fade>
-        <Fade><p className="lead mx-auto mt-5 max-w-[34em] text-white/75">Один стик утром. 20 секунд. {rub(perDay(c))} в день. А если не почувствуете разницу — вернём деньги, тубу оставьте себе.</p></Fade>
+        <Fade><p className="lead mx-auto mt-5 max-w-[34em] text-white/75">Один стик утром. 20 секунд. {rub(perDay(c))} в день. А если не почувствуете разницу — вернём деньги.</p></Fade>
         <Fade className="mt-8 flex flex-col items-center gap-3">
-          <button type="button" onClick={onOrder} className="btn btn-blush w-full max-w-[420px]">Забрать тубу из первой партии</button>
-          <p className="text-[13.5px] text-white/55">Первая партия — {num(CONFIG.batchSize)} туб · доставка 0 ₽ · отмена в одно касание</p>
+          <button type="button" onClick={onOrder} className="btn btn-blush w-full max-w-[420px]">Попробовать mouren</button>
+          <p className="text-[13.5px] text-white/55">Гарантия результата · доставка 0 ₽ · отмена в одно касание</p>
         </Fade>
       </div>
     </section>

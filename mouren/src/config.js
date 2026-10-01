@@ -14,7 +14,7 @@ export const CONFIG = {
       tubes: 3,
       unit: 'за 3 месяца',
       guaranteeDays: 90,
-      lines: ['3 тубы одной отправкой', 'Разбор ваших анализов с нутрициологом', 'Гарантия 90 дней'],
+      lines: ['90 порций — полный курс', 'Разбор ваших анализов с нутрициологом', 'Гарантия 90 дней'],
       billing: 'Следующее списание — через 3 месяца, напомним за 3 дня.',
     },
     {
@@ -26,12 +26,12 @@ export const CONFIG = {
       tubes: 1,
       unit: 'в месяц',
       guaranteeDays: 30,
-      lines: ['Туба каждый месяц', 'Пауза и отмена в одно касание', 'Гарантия 30 дней'],
+      lines: ['30 порций каждый месяц', 'Пауза и отмена в одно касание', 'Гарантия 30 дней'],
       billing: 'Следующее списание — через 30 дней, напомним за 3 дня.',
     },
     {
       id: 'once',
-      title: 'Разовая туба',
+      title: 'Разовая покупка',
       badge: '',
       price: 9000,
       days: 30,
@@ -48,19 +48,15 @@ export const CONFIG = {
   stackPrice: 15450,
   stackCount: 22,
 
-  // Первая партия
-  batchSize: 2000,
-  batchLeft: null, // число оставшихся туб — ставьте, только если оно связано с реальными остатками
-
   // Бонусы стека ценности. value — честная рыночная стоимость в ₽ (0 — не показывать сумму).
-  // firstBatch: true — только для первой партии.
   bonuses: [
     { title: 'Разбор ваших анализов с нутрициологом', note: 'на курсе 12 недель', value: 4500, plans: ['course'] },
     { title: 'Карта анализов «до и после»: ферритин, D, B12', note: 'что сдать и когда', value: 990, plans: ['course', 'month', 'once'] },
     { title: 'Дневник 12 недель в Telegram', note: '1 минута в неделю — видно, что меняется', value: 1490, plans: ['course', 'month'] },
     { title: 'Протокол мягкого старта', note: 'для чувствительного живота', value: 0, plans: ['course', 'month', 'once'] },
     { title: 'Паспорт партии: тяжёлые металлы и микробиология', note: 'лабораторный протокол', value: 0, plans: ['course', 'month', 'once'] },
-    { title: 'Фиксированная цена навсегда', note: 'для подписчиц первой партии', value: 0, plans: ['course', 'month'], firstBatch: true },
+    { title: 'Стартовый набор mouren', note: 'стакан-шейкер, карта анализов и дневник — к первой подписке', value: 1990, plans: ['course', 'month'] },
+    { title: 'Цена не вырастет, пока вы с нами', note: 'для подписчиц', value: 0, plans: ['course', 'month'] },
     { title: 'Доставка по России', note: 'в любой город', value: 0, plans: ['course', 'month', 'once'] },
   ],
 
@@ -80,3 +76,11 @@ export const CONFIG = {
 export const num = (n) => new Intl.NumberFormat('ru-RU').format(n).replace(/\s/g, '\u00a0')
 export const rub = (n) => new Intl.NumberFormat('ru-RU').format(n).replace(/\s/g, ' ') + ' ₽'
 export const perDay = (p) => Math.floor(p.price / p.days)
+
+// Ссылка на страницу товара с сохранением промокода и темы блогера
+export function productUrl(plan) {
+  const q = new URLSearchParams(location.search)
+  if (plan) q.set('plan', plan)
+  const qs = q.toString()
+  return 'product.html' + (qs ? '?' + qs : '')
+}
