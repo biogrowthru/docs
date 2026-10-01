@@ -1,0 +1,15 @@
+{
+  "name": "mouren — макет сайта",
+  "id": "mouren-site-import",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": [
+    "figma"
+  ],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": [
+      "none"
+    ]
+  }
+}
